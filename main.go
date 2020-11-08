@@ -25,6 +25,9 @@ func allArticles(w http.ResponseWriter, r *http.Request){
 	json.NewEncoder(w).Encode(articles)
 }
 
+func testPostArticles(w http.ResponseWriter, r *http.Request){
+	fmt.Fprint(w, "test POST endpoint")
+}
 func homePage(w http.ResponseWriter, r *http.Request){
 	fmt.Fprint(w, "Homepage endpoint hit")
 }
@@ -33,7 +36,8 @@ func handleRequests(){
 
 	myRouter := mux.NewRouter().StrictSlash(true)
 	myRouter.HandleFunc("/", homePage)
-	myRouter.HandleFunc("/articles", allArticles)
+	myRouter.HandleFunc("/articles", allArticles).Methods("GET")
+	myRouter.HandleFunc("/articles", testPostArticles).Methods("POST")
 	log.Fatal(http.ListenAndServe(":8081", myRouter))
 }
 
